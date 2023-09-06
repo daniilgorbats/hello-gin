@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-flask
+  name: hello-gin
   labels:
-    app: hello-flask
+    app: hello-gin
 spec:
   selector:
-    app: hello-flask
+    app: hello-gin
   ports:
   - protocol: TCP
     port: 8000

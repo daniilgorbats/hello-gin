@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-flask
+  name: hello-gin
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: hello-flask
+      app: hello-gin
   template:
     metadata:
       labels:
-        app: hello-flask
+        app: hello-gin
     spec:
       enableServiceLinks: false
       imagePullSecrets:
         - name: regcred
       containers:
-        - name: hello-flask
+        - name: hello-gin
           image: {{ .Values.image }}
           command:
             - /app/app.py
