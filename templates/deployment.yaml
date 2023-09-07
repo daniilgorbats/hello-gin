@@ -19,9 +19,6 @@ spec:
       containers:
         - name: hello-gin
           image: {{ .Values.image }}
-          command:
-            - /app/app.py
-            - {{ .Values.greeting }}
           env:
             - name: MY_POD_NAME
               valueFrom:

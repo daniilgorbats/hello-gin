@@ -1,4 +1,4 @@
 username: daniil
 greeting: Greetings from Helm
-hostname: hello-helm-daniil
+hostname: hello-daniil
 image: harbor.codemowers.eu/daniilgorbats/hello-gin:latest
