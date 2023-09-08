@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: hello-gin
 spec:
-  replicas: 3
+  replicas: 4
   selector:
     matchLabels:
       app: hello-gin
