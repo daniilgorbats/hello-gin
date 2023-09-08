@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-helm
+  name: hello-gin
   annotations:
     kubernetes.io/ingress.class: shared
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
