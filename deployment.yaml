@@ -1,17 +1,4 @@
 ---
-apiVersion: v1
-kind: Pod
-metadata:
-  name: security-context-demo
-spec:
-  securityContext:
-    runAsUser: 1000
-    fsGroup: 1000
-  containers:
-    securityContext:
-      readOnlyRootFilesystem: true
-      allowPrivilegeEscalation: false
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,10 +13,17 @@ spec:
       labels:
         app: hello-gin
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
       enableServiceLinks: false
       imagePullSecrets:
         - name: imgcred
       containers:
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
         - name: hello-gin
           image: hello-gin
           env:
