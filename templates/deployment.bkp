@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-gin
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-gin
+  template:
+    metadata:
+      labels:
+        app: hello-gin
+    spec:
+      enableServiceLinks: false
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: hello-gin
+          image: {{ .Values.image }}
+          env:
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          ports:
+            - containerPort: 8000
+              name: metrics

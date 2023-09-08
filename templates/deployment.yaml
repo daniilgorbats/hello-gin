@@ -13,17 +13,66 @@ spec:
       labels:
         app: hello-gin
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
       enableServiceLinks: false
       imagePullSecrets:
-        - name: regcred
+        - name: imgcred
       containers:
         - name: hello-gin
-          image: {{ .Values.image }}
+          image: harbor.codemowers.eu/daniilgorbats/hello-gin:latest
+          securityContext:
+            readOnlyRootFilesystem: true
           env:
+            - name: USERNAME
+              value: {{ .Values.username }}
             - name: MY_POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
           ports:
             - containerPort: 8000
+              name: http
+            - containerPort: 8080
               name: metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-gin
+  labels:
+    app: hello-gin
+spec:
+  selector:
+    app: hello-gin
+  ports:
+  - protocol: TCP
+    port: 8000
+    name: http
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-gin
+  annotations:
+    kubernetes.io/ingress.class: shared
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    external-dns.alpha.kubernetes.io/target: traefik.codemowers.ee
+spec:
+  rules:
+  - host: hello-daniil.codemowers.ee
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/api/v1/gin"
+        backend:
+          service:
+            name: hello-gin
+            port:
+              name: http
+  tls:
+  - hosts:
+    - "*.codemowers.ee"
