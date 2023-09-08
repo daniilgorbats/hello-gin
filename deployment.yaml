@@ -21,14 +21,13 @@ spec:
       imagePullSecrets:
         - name: imgcred
       containers:
-        securityContext:
-          readOnlyRootFilesystem: true
-          allowPrivilegeEscalation: false
         - name: hello-gin
-          image: hello-gin
+          image: harbor.codemowers.eu/daniilgorbats/hello-gin:latest
+          securityContext:
+            readOnlyRootFilesystem: true
           env:
             - name: USERNAME
-              value: world
+              value: {{ .Values.username }}
             - name: MY_POD_NAME
               valueFrom:
                 fieldRef:
